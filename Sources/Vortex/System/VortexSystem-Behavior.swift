@@ -39,6 +39,7 @@ extension VortexSystem {
         // Push attraction strength down to a small number, otherwise
         // it's much too strong.
         let adjustedAttractionStrength = attractionStrength / 1000
+        let adjustedAttractionRadius = attractionRadius / 1000
 
         if let attractionCenter {
             attractionUnitPoint = [attractionCenter.x / drawSize.width, attractionCenter.y / drawSize.height]
@@ -55,11 +56,15 @@ extension VortexSystem {
                 let distance = sqrt((gap * gap).sum())
 
                 if distance > 0 {
-                    let normalized = gap / distance
+                    
+                    // Scale distance using attractionRadius as a multiplier
+                    let scaledDistance = distance / max(attractionRadius, 0.001)
+                    
+                    let normalized = gap / scaledDistance
 
                     // Increase the magnitude the closer we get, adding a small
                     // amount to avoid a slingshot / over-attraction.
-                    let movementMagnitude = adjustedAttractionStrength / (distance * distance + 0.0025)
+                    let movementMagnitude = adjustedAttractionStrength / (scaledDistance * scaledDistance + 0.0025)
                     let movement = normalized * movementMagnitude * delta
                     particle.position += movement
                 }

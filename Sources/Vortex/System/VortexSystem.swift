@@ -13,7 +13,7 @@ public class VortexSystem: Codable, Identifiable, Equatable, Hashable {
     enum CodingKeys: CodingKey {
         case tags, secondarySystems, spawnOccasion, position, shape, birthRate, emissionLimit, emissionDuration
         case idleDuration, burstCount, burstCountVariation, lifespan, lifespanVariation, speed, speedVariation, angle
-        case angleRange, acceleration, attractionCenter, attractionStrength, dampingFactor, angularSpeed
+        case angleRange, acceleration, attractionCenter, attractionStrength, attractionRadius, dampingFactor, angularSpeed
         case angularSpeedVariation, colors, size, sizeVariation, sizeMultiplierAtDeath, stretchFactor
     }
 
@@ -136,6 +136,9 @@ public class VortexSystem: Codable, Identifiable, Equatable, Hashable {
     /// A specific point particles should move towards or away from, based
     /// on `attractionStrength`. A `nil` value here means no attraction.
     public var attractionCenter: SIMD2<Double>?
+    
+    /// Required to attract particles from a farther locations, than originally meant to
+    public var attractionRadius: Double
 
     /// How fast to move towards `attractionCenter`, when it is not `nil`.
     public var attractionStrength: Double
@@ -258,6 +261,7 @@ public class VortexSystem: Codable, Identifiable, Equatable, Hashable {
         acceleration: SIMD2<Double> = [0, 0],
         attractionCenter: SIMD2<Double>? = nil,
         attractionStrength: Double = 0,
+        attractionRadius: Double = 1,
         dampingFactor: Double = 0,
         angularSpeed: SIMD3<Double> = [0, 0, 0],
         angularSpeedVariation: SIMD3<Double> = [0, 0, 0],
@@ -288,6 +292,7 @@ public class VortexSystem: Codable, Identifiable, Equatable, Hashable {
         self.angleRange = angleRange
         self.attractionCenter = attractionCenter
         self.attractionStrength = attractionStrength
+        self.attractionRadius = attractionRadius
         self.dampingFactor = dampingFactor
         self.angularSpeed = angularSpeed
         self.angularSpeedVariation = angularSpeedVariation
@@ -330,6 +335,7 @@ public class VortexSystem: Codable, Identifiable, Equatable, Hashable {
             acceleration: acceleration,
             attractionCenter: attractionCenter,
             attractionStrength: attractionStrength,
+            attractionRadius: attractionRadius,
             dampingFactor: dampingFactor,
             angularSpeed: angularSpeed,
             angularSpeedVariation: angularSpeedVariation,
