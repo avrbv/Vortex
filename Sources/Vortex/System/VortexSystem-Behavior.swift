@@ -60,7 +60,7 @@ extension VortexSystem {
                     // Scale distance using attractionRadius as a multiplier
                     let scaledDistance = distance / max(attractionRadius, 0.001)
                     
-                    let normalized = gap / scaledDistance
+                    let normalized = gap / distance
 
                     // Increase the magnitude the closer we get, adding a small
                     // amount to avoid a slingshot / over-attraction.
